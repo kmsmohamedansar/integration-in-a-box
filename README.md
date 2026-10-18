@@ -1,5 +1,12 @@
 # Integration-in-a-box
 
+## In plain English
+
+This project shows how two fictional businesses can exchange orders and inventory information even though their systems use different names and formats. The connector translates between them, protects the connection, and makes failures visible instead of hiding them.
+
+**Status:** Working demonstration using fictional companies, synthetic data, and local-only credentials.
+
+
 Two made-up companies, and the engineer who connects them.
 
 - **Harbourline** sells inventory software. It's the source of truth for stock.
@@ -21,24 +28,24 @@ You need [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 docker compose up --build
 ```
 
-Open **http://localhost:4000** for the control room and sign in as **sam / maple-demo** (a made-up Maple & Main staff account). Press the buttons in the middle to make a shopper buy something or a delivery arrive, and watch the connector move the data.
+Open **http://localhost:4000** for the control room and sign in with the local demo account defined in the repository configuration. Press the buttons in the middle to make a shopper buy something or a delivery arrive, and watch the connector move the data.
 
 Other addresses:
 
 - Harbourline API: http://localhost:4001/v1/products (needs an access token, see below)
 - Maple & Main API: http://localhost:4002/api/inventory
-- Keycloak, the login server: http://localhost:8080 (admin / admin)
+- Keycloak, the login server: http://localhost:8080 (use the local credentials defined in the repository configuration)
 
 Get an access token the way the connector does, then call Harbourline with it:
 
 ```bash
 TOKEN=$(curl -s -X POST localhost:8080/realms/harbourline/protocol/openid-connect/token \
   -d grant_type=client_credentials -d client_id=maple-connector \
-  -d client_secret=dev-only-connector-secret-change-me | jq -r .access_token)
+  -d client_secret="$CONNECTOR_CLIENT_SECRET" | jq -r .access_token)
 curl -s localhost:4001/v1/products -H "Authorization: Bearer $TOKEN"
 ```
 
-Every password and secret in this project is a made-up, dev-only value for a local demo.
+All credentials are local demo values. Keep them out of real deployments and load them from local configuration or environment variables.
 
 Stop with `Ctrl+C`. Add `-v` to `docker compose down -v` to wipe the data and start fresh.
 
