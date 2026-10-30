@@ -6,6 +6,10 @@ This project shows how two fictional businesses can exchange orders and inventor
 
 **Status:** Working demonstration using fictional companies, synthetic data, and local-only credentials.
 
+[![Checks](https://github.com/kmsmohamedansar/integration-in-a-box/actions/workflows/checks.yml/badge.svg)](https://github.com/kmsmohamedansar/integration-in-a-box/actions/workflows/checks.yml)
+
+The automated checks run the test suite, TypeScript checks and web build. They use a test identity provider and do not launch the complete Docker and Keycloak demo.
+
 
 Two made-up companies, and the engineer who connects them.
 
